@@ -1,3 +1,40 @@
-<html>
-  Hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving donkey</title>
+    <style>
+        #donkey {
+            position: absolute;
+            top: 24%;
+            left: 24%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <img id="donkey" src="donkey.png"donkey Image">
+
+    <script>
+        const donkey = document.getElementById('donkey');
+
+        document.addEventListener('mousemove', function (e) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            const bodyRect = document.body.getBoundingClientRect();
+            const elemRect = donkey.getBoundingClientRect();
+            const offsetX = elemRect.width / 2;
+            const offsetY = elemRect.height / 2;
+
+            const newX = mouseX - bodyRect.left - offsetX;
+            const newY = mouseY - bodyRect.top - offsetY;
+
+            donkey.style.transform = `translate(${newX}px, ${newY}px)`;
+        });
+    </script>
+</body>
 </html>
+
