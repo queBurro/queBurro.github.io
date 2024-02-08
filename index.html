@@ -1,40 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moving donkey</title>
-    <style>
-        #donkey {
-            position: absolute;
-            top: 24%;
-            left: 24%;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Location Tracker</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+</style>
 </head>
 <body>
-    <img id="donkey" src="donkey.png"donkey Image">
+    <h1>Your Location</h1>
+    <div id="coordinates"></div>
+    <div id="map"></div>
+    <button id="reportFullBin">Report full bin</button>
+    <button id="reportFlyTipping">Report fly tipping</button>
 
     <script>
-        const donkey = document.getElementById('donkey');
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
 
-        document.addEventListener('mousemove', function (e) {
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const mapDiv = document.getElementById("map");
+            const coordinatesDiv = document.getElementById("coordinates");
 
-            const bodyRect = document.body.getBoundingClientRect();
-            const elemRect = donkey.getBoundingClientRect();
-            const offsetX = elemRect.width / 2;
-            const offsetY = elemRect.height / 2;
+            const mapUrl = `https://www.google.com/maps?q=${latitude},${longitude}&output=embed`;
 
-            const newX = mouseX - bodyRect.left - offsetX;
-            const newY = mouseY - bodyRect.top - offsetY;
+            mapDiv.innerHTML = `<iframe width="100%" height="100%" frameborder="0" style="border:0" src="${mapUrl}" allowfullscreen></iframe>`;
+            coordinatesDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
 
-            donkey.style.transform = `translate(${newX}px, ${newY}px)`;
-        });
+            // Attach click event listeners to the buttons
+            document.getElementById("reportFullBin").addEventListener("click", function() {
+                sendEmail("fullbin@me.co.uk", latitude, longitude, "Please empty the bin");
+            });
+            document.getElementById("reportFlyTipping").addEventListener("click", function() {
+                sendEmail("flytipping@me.co.uk", latitude, longitude, "Please remove this fly tipping");
+            });
+        }
+
+        function sendEmail(emailAddress, latitude, longitude, msg) {
+            // Construct the email message
+            const message = `There's a problem at Latitude: ${latitude}, Longitude: ${longitude}. \n${msg}
+            \nThanks \n\n https://www.google.com/maps?q=${latitude},${longitude}`;
+
+            // Construct the mailto URL
+            const mailtoUrl = `mailto:${emailAddress}?subject=Lat:${latitude},Long:${longitude}. ${msg}&body=${encodeURIComponent(message)}`;
+
+            // Open the default email client with the mailto URL
+            window.location.href = mailtoUrl;
+        }
+
+        getLocation();
     </script>
 </body>
 </html>
-
