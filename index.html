@@ -22,6 +22,7 @@
     <div id="map"></div>
     <button id="reportFullBin">Report full bin</button>
     <button id="reportFlyTipping">Report fly tipping</button>
+    <button id="reportSomethingElse">Report something else</button>
 
     <script>
         function getLocation() {
@@ -50,6 +51,10 @@
             document.getElementById("reportFlyTipping").addEventListener("click", function() {
                 sendEmail("flytipping@me.co.uk", latitude, longitude, "Please remove this fly tipping");
             });
+            document.getElementById("reportSomethingElse").addEventListener("click", function() {
+                sendEmail("reportSomethingElse@me.co.uk", latitude, longitude, "Please fix this. Details below...");
+            });
+
         }
 
         function sendEmail(emailAddress, latitude, longitude, msg) {
