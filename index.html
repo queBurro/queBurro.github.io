@@ -46,7 +46,7 @@
 
             // Attach click event listeners to the buttons
             document.getElementById("reportFullBin").addEventListener("click", function() {
-                sendEmail("waste.cleansing@southderbyshire.gov.uk", latitude, longitude, "Please empty the bin");
+                sendEmail("waste.cleansing@southderbyshire.gov.uk", latitude, longitude, "Please can you empty the full bin.");
             });
             document.getElementById("reportFlyTipping").addEventListener("click", function() {
                 sendEmail("flytipping@me.co.uk", latitude, longitude, "Please remove this fly tipping");
@@ -59,11 +59,11 @@
 
         function sendEmail(emailAddress, latitude, longitude, msg) {
             // Construct the email message
-            const message = `There's a problem at Latitude: ${latitude}, Longitude: ${longitude}. \n${msg}
+            const message = `Hi, \n\nThere's a problem at ${latitude},${longitude}. \n${msg}
             \nThanks \n\n https://www.google.com/maps?q=${latitude},${longitude}`;
 
             // Construct the mailto URL
-            const mailtoUrl = `mailto:${emailAddress}?subject=Lat:${latitude},Long:${longitude}. ${msg}&body=${encodeURIComponent(message)}`;
+            const mailtoUrl = `mailto:${emailAddress}?subject=${latitude},${longitude}. ${msg}&body=${encodeURIComponent(message)}`;
 
             // Open the default email client with the mailto URL
             window.location.href = mailtoUrl;
